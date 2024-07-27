@@ -37,11 +37,12 @@ public class MatchRestController {
             return new ResponseEntity<>(dto, HttpStatus.OK);
         }catch (MatchNotFoundException e){
             e.getMessage();
+            //JSON TO RETURN FOR SITE ERROR INFORMATION
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = {"/{id}/{pid}"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.PUT, path = {"/{id}/{pid}"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity winner(@PathVariable Integer id, @PathVariable Integer pid){
 
         try {
@@ -49,6 +50,8 @@ public class MatchRestController {
             Point point = pointService.get(pid);
             if(match.getPointp().contains(point)){
                 match.setWinner(point);
+                match.setStatus("FINISH");
+                matchService.updateMatch(match);
                 return new ResponseEntity<>(HttpStatus.OK);
             }else{
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -56,6 +59,7 @@ public class MatchRestController {
 
         }catch (MatchNotFoundException | PointNotFoundException e){
             e.getMessage();
+            //JSON TO RETURN FOR SITE ERROR INFORMATION
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
