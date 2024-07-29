@@ -4,11 +4,9 @@ import com.filipejosilva.online.tournament.command.PlayerDto;
 import com.filipejosilva.online.tournament.command.TournamentDto;
 import com.filipejosilva.online.tournament.converter.PlayerToDto;
 import com.filipejosilva.online.tournament.converter.TournamentToDto;
-import com.filipejosilva.online.tournament.exception.DeckNotFoundException;
-import com.filipejosilva.online.tournament.exception.PlayerNotFoundException;
 import com.filipejosilva.online.tournament.exception.RegisterErrorException;
 import com.filipejosilva.online.tournament.exception.TournamentNotFoundException;
-import com.filipejosilva.online.tournament.model.Player;
+import com.filipejosilva.online.tournament.model.Package;
 import com.filipejosilva.online.tournament.model.Tournament;
 import com.filipejosilva.online.tournament.service.PlayerService;
 import com.filipejosilva.online.tournament.service.TournamentService;
@@ -112,9 +110,21 @@ public class TournamentRestController {
         try {
 
             Tournament tournament = tournamentService.get(id);
+
+            Package aPackage = new Package();
+
+            if (tournament.getPlayers().size() < 4) {
+
+                aPackage.setName("Error");
+                aPackage.setMessage("The tournament has less than 4 players! Please add more players.");
+                return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+            }
+
+            aPackage.setName("Successful");
+            aPackage.setMessage("Tournament created!");
             tournamentService.createRounds(tournament);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(aPackage, HttpStatus.OK);
         }catch (TournamentNotFoundException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

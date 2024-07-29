@@ -5,6 +5,7 @@ import com.filipejosilva.online.tournament.converter.DeckToDto;
 import com.filipejosilva.online.tournament.exception.DeckNotFoundException;
 import com.filipejosilva.online.tournament.exception.TournamentNotFoundException;
 import com.filipejosilva.online.tournament.model.Deck;
+import com.filipejosilva.online.tournament.model.Package;
 import com.filipejosilva.online.tournament.service.DeckService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,15 +59,28 @@ public class DeckRestController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @RequestMapping(method = RequestMethod.DELETE, path = "/{id}/delete")
-    public ResponseEntity delete(@PathVariable Integer id){
+    @RequestMapping(method = RequestMethod.DELETE, path = "/{id}/delete", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Package> delete(@PathVariable Integer id){
         try {
             Deck delete = deckService.get(id);
+
+            Package send = new Package();
+            if(!delete.getPlayers().isEmpty()){
+
+                send.setName("Error");
+                send.setMessage("Theres 1 or more players with this deck on their profile");
+                return new ResponseEntity<>(send, HttpStatus.BAD_REQUEST);
+            }
+            send.setName("Successful");
+            send.setMessage("Deck Removed");
             deckService.remove(delete.getId());
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(send, HttpStatus.OK);
         }catch (DeckNotFoundException e){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            Package send = new Package();
+            send.setName("Error");
+            send.setMessage(e.getMessage());
+            return new ResponseEntity<>(send, HttpStatus.BAD_REQUEST);
         }
 
     }
