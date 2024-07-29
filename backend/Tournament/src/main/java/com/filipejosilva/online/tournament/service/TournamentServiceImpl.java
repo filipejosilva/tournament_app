@@ -143,8 +143,7 @@ public class TournamentServiceImpl implements TournamentService {
 
                 /* may remove this after create a check on javascript ?*/
 
-
-            }catch (NoUndefeatedPlayerException | RoundNotFinishException e) {
+            }catch (NoUndefeatedPlayerException e) {
 
                 /*try {
                     List<Round> rounds =tournament.getRounds();
@@ -157,10 +156,10 @@ public class TournamentServiceImpl implements TournamentService {
                 roundService.createRound(tournament);
                 return;
 
+            }catch ( RoundNotFinishException e){
+                return;
             }
             changeStatus(tournament.getId(), "CLOSED");
-            //tournament.setStatus("CLOSED");
-            //updateTournament(tournament);
         }
     }
 
