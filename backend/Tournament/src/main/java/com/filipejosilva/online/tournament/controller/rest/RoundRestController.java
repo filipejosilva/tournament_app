@@ -5,6 +5,7 @@ import com.filipejosilva.online.tournament.command.RoundDto;
 import com.filipejosilva.online.tournament.converter.RoundToDto;
 import com.filipejosilva.online.tournament.exception.*;
 import com.filipejosilva.online.tournament.model.Match;
+import com.filipejosilva.online.tournament.model.Package;
 import com.filipejosilva.online.tournament.model.Round;
 import com.filipejosilva.online.tournament.model.Tournament;
 import com.filipejosilva.online.tournament.service.MatchService;
@@ -56,18 +57,21 @@ public class RoundRestController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = {"/{id}"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity updateRound(@PathVariable Integer id){
+    public ResponseEntity<Package> updateRound(@PathVariable Integer id){
 
         try {
             Round round = roundService.get(id);
             matchService.checkMatches(round);
-            //round.setStatus("CLOSED");
             roundService.updateRound(round);
-            return new ResponseEntity<>(HttpStatus.OK);
+            Package aPackage = new Package();
+            aPackage.setMessage("Updated successful");
+            aPackage.setName("Successful");
+            return new ResponseEntity<>(aPackage, HttpStatus.OK);
         }catch (RoundNotFoundException | MatchNotFinishException e){
-            e.getMessage();
-            //JSON TO RETURN FOR SITE ERROR INFORMATION
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            Package aPackage = new Package();
+            aPackage.setMessage("Theres matches still in progress! Don't forget to register the results");
+            aPackage.setName("Error");
+            return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
         }
     }
 

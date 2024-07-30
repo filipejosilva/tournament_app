@@ -116,7 +116,7 @@ public class TournamentServiceImpl implements TournamentService {
      * @param tournament to know what tournament we are creating rounds;
      */
     @Override
-    public void createRounds(Tournament tournament) {
+    public void createRounds(Tournament tournament) throws RoundNotFinishException{
         if(tournament.getStatus().equals("CLOSED")){
             return;
         }
@@ -157,18 +157,52 @@ public class TournamentServiceImpl implements TournamentService {
                 return;
 
             }catch ( RoundNotFinishException e){
-                return;
+              
+                throw new RoundNotFinishException();
+
             }
             changeStatus(tournament.getId(), "CLOSED");
         }
     }
 
+    /**
+     * Add player to the tournament
+     * @param tid tournamentId
+     * @param pid playerId
+     */
     public void addPlayers(int tid, int pid)throws RegisterErrorException{
         try {
             //tx.beginWrite();
             Tournament tournament = get(tid);
             Player player = playerService.get(pid);
+            if(player.getTournaments().contains(tournament)){
+                throw new RegisterErrorException();
+            }
             player.getTournaments().add(tournament);
+            playerService.updatePlayer(player);
+            //tx.commit();
+
+        }catch (PersistenceException | TournamentNotFoundException | PlayerNotFoundException | DeckNotFoundException e){
+            e.getMessage();
+            //tx.rollback();
+            throw new RegisterErrorException();
+        }
+    }
+
+    /**
+     * Remove player to the tournament
+     * @param tid tournamentId
+     * @param pid playerId
+     */
+    public void removePlayers(int tid, int pid)throws RegisterErrorException{
+        try {
+            //tx.beginWrite();
+            Tournament tournament = get(tid);
+            Player player = playerService.get(pid);
+            if(!player.getTournaments().contains(tournament)){
+                throw new RegisterErrorException();
+            }
+            player.getTournaments().remove(tournament);
             playerService.updatePlayer(player);
             //tx.commit();
 

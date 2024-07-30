@@ -1,6 +1,7 @@
 package com.filipejosilva.online.tournament.service;
 
 import com.filipejosilva.online.tournament.exception.RegisterErrorException;
+import com.filipejosilva.online.tournament.exception.RoundNotFinishException;
 import com.filipejosilva.online.tournament.exception.StatusUnavailableException;
 import com.filipejosilva.online.tournament.exception.TournamentNotFoundException;
 import com.filipejosilva.online.tournament.model.Tournament;
@@ -21,6 +22,7 @@ public interface TournamentService {
 
     void deleteTournament(int id);
 
-    void createRounds(Tournament tournament);
+    void createRounds(Tournament tournament) throws RoundNotFinishException;
     void addPlayers(int tid, int pid) throws RegisterErrorException;
+    void removePlayers(int tid, int pid) throws RegisterErrorException;
 }

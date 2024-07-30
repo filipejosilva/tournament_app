@@ -86,15 +86,13 @@ public class PlayerRestController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/delete/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity deletePlayer(@PathVariable Integer id , BindingResult bindingResult){
+    public ResponseEntity deletePlayer(@PathVariable Integer id){
         try {
-            if (bindingResult.hasErrors()){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
             playerService.removePlayer(id);
 
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (PlayerNotFoundException e){
+            //JSON TO DELETE DECKS
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
