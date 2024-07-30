@@ -18,11 +18,11 @@ INSERT INTO decks (leader) VALUES
 
 INSERT INTO players (nickname, maindeck) VALUES
 ('Filipe', 'Green Black Perona'),
-('Dabid', 'Blue Name'),
+('Dabid', 'Blue Nami'),
 ('Joao', 'Yellow Katakuri'),
-('Filipe', 'Green Black Perona'),
-('Dabid', 'Blue Name'),
-('Joao', 'Yellow Katakuri');
+('Rodrigo', 'Green Black Perona'),
+('Marc', 'Red Purple Law'),
+('Nunu', 'Blue Nami');
 
 INSERT INTO players_decks (players_id, decks_id) VALUES
 ('1', '1'),
@@ -33,6 +33,9 @@ INSERT INTO players_decks (players_id, decks_id) VALUES
 ('2', '7'),
 ('3', '5'),
 ('3', '6'),
+('5', '10'),
+('4', '1'),
+('6', '4'),
 ('3', '8');
 
 INSERT INTO players_tournaments (players_id, tournaments_id) VALUES

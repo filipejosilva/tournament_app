@@ -4,11 +4,10 @@ import com.filipejosilva.online.tournament.command.PlayerDto;
 import com.filipejosilva.online.tournament.command.TournamentDto;
 import com.filipejosilva.online.tournament.converter.PlayerToDto;
 import com.filipejosilva.online.tournament.converter.TournamentToDto;
-import com.filipejosilva.online.tournament.exception.DeckNotFoundException;
-import com.filipejosilva.online.tournament.exception.PlayerNotFoundException;
 import com.filipejosilva.online.tournament.exception.RegisterErrorException;
+import com.filipejosilva.online.tournament.exception.RoundNotFinishException;
 import com.filipejosilva.online.tournament.exception.TournamentNotFoundException;
-import com.filipejosilva.online.tournament.model.Player;
+import com.filipejosilva.online.tournament.model.Package;
 import com.filipejosilva.online.tournament.model.Tournament;
 import com.filipejosilva.online.tournament.service.PlayerService;
 import com.filipejosilva.online.tournament.service.TournamentService;
@@ -112,25 +111,69 @@ public class TournamentRestController {
         try {
 
             Tournament tournament = tournamentService.get(id);
+
+            Package aPackage = new Package();
+
+            if (tournament.getPlayers().size() < 4) {
+
+                aPackage.setName("Error");
+                aPackage.setMessage("The tournament has less than 4 players! Please add more players.");
+                return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+            }
+
+            aPackage.setName("Successful");
+            aPackage.setMessage("Tournament created!");
             tournamentService.createRounds(tournament);
 
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch (TournamentNotFoundException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(aPackage, HttpStatus.OK);
+        }catch (TournamentNotFoundException | RoundNotFinishException e){
+            Package aPackage = new Package();
+
+            aPackage.setName("Error");
+            aPackage.setMessage("Round is still not finished");
+            return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = {"/{id}/register/{pid}"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Tournament> getTournament(@PathVariable Integer id, @PathVariable Integer pid){
+    public ResponseEntity<Package> addPlayers(@PathVariable Integer id, @PathVariable Integer pid){
 
         try {
             tournamentService.addPlayers(id, pid);
-            return new ResponseEntity<>(HttpStatus.OK);
+            Package aPackage = new Package();
+
+            aPackage.setName("Successful");
+            aPackage.setMessage("Player Register");
+            return new ResponseEntity<>(aPackage, HttpStatus.OK);
         }catch (RegisterErrorException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            Package aPackage = new Package();
+
+            aPackage.setName("Error");
+            aPackage.setMessage("Error registering a player");
+            return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @RequestMapping(method = RequestMethod.DELETE, path = {"/{id}/remove/{pid}"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Package> removePlayers(@PathVariable Integer id, @PathVariable Integer pid){
+
+        try {
+            tournamentService.removePlayers(id, pid);
+            Package aPackage = new Package();
+
+            aPackage.setName("Successful");
+            aPackage.setMessage("Player Remove");
+            return new ResponseEntity<>(aPackage, HttpStatus.OK);
+        }catch (RegisterErrorException e){
+            Package aPackage = new Package();
+
+            aPackage.setName("Error");
+            aPackage.setMessage("Error removing player");
+            return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @RequestMapping(method = RequestMethod.GET, path = {"/{id}/players"}, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PlayerDto>> getPlayerList(@PathVariable Integer id){
         try {

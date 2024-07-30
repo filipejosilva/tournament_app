@@ -23,7 +23,7 @@ public class MainRestController {
     private RankingService rankingtService;
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity test(@PathVariable Integer id) throws PointNotFoundException, TournamentNotFoundException {
+    public ResponseEntity test(@PathVariable Integer id) throws RoundNotFinishException, TournamentNotFoundException {
         /* this should be the new tournament method
         pointService.createPointsForTournament(tournamentService.get(id));
         Tournament tournament = tournamentService.get(id);
