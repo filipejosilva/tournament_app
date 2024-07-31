@@ -157,9 +157,7 @@ public class TournamentServiceImpl implements TournamentService {
                 return;
 
             }catch ( RoundNotFinishException e){
-              
                 throw new RoundNotFinishException();
-
             }
             changeStatus(tournament.getId(), "CLOSED");
         }
