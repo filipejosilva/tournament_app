@@ -1,11 +1,15 @@
 package com.filipejosilva.online.tournament.controller.rest;
 
+import com.filipejosilva.online.tournament.command.DeckDto;
 import com.filipejosilva.online.tournament.command.PlayerDto;
 import com.filipejosilva.online.tournament.command.TournamentDto;
+import com.filipejosilva.online.tournament.converter.DeckToDto;
 import com.filipejosilva.online.tournament.converter.PlayerToDto;
 import com.filipejosilva.online.tournament.converter.TournamentToDto;
 import com.filipejosilva.online.tournament.exception.DeckNotFoundException;
 import com.filipejosilva.online.tournament.exception.PlayerNotFoundException;
+import com.filipejosilva.online.tournament.model.Deck;
+import com.filipejosilva.online.tournament.model.Package;
 import com.filipejosilva.online.tournament.model.Player;
 import com.filipejosilva.online.tournament.model.Tournament;
 import com.filipejosilva.online.tournament.service.DeckService;
@@ -27,6 +31,7 @@ public class PlayerRestController {
 
     private PlayerService playerService;
     private DeckService deckService;
+    private DeckToDto deckToDto;
     private PlayerToDto playerToDto;
     private TournamentToDto tournamentToDto;
 
@@ -99,32 +104,66 @@ public class PlayerRestController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/{id}/{did}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addDeck(@PathVariable Integer id, @PathVariable Integer did){
+    public ResponseEntity<Package> addDeck(@PathVariable Integer id, @PathVariable Integer did){
         try {
             /* Checking if the player is in the db */
-            playerService.get(id);
-            deckService.get(did);
+            Player player = playerService.get(id);
+            Deck deck = deckService.get(did);
+
+            Package aPackage = new Package();
+
+            if(player.getDecks().contains(deck)){
+                aPackage.setName("Error");
+                aPackage.setMessage("Player already have this deck");
+                return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+            }
 
             playerService.addDeck(id, did);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            aPackage.setName("Successful");
+            aPackage.setMessage("Deck Added");
+
+            return new ResponseEntity<>(aPackage, HttpStatus.OK);
         }catch (PlayerNotFoundException | DeckNotFoundException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            Package aPackage = new Package();
+            aPackage.setName("Error");
+            aPackage.setMessage(e.getMessage());
+            return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
         }
 
     }
 
     @RequestMapping(method = RequestMethod.DELETE, path = "/{id}/{did}")
-    public ResponseEntity removeDeck(@PathVariable Integer id, @PathVariable Integer did){
+    public ResponseEntity<Package> removeDeck(@PathVariable Integer id, @PathVariable Integer did){
         try {
-            playerService.get(id);
-            deckService.get(did);
+            Player player =playerService.get(id);
+            Deck deck =deckService.get(did);
+
+            Package aPackage = new Package();
+
+            if(!player.getDecks().contains(deck)){
+                aPackage.setName("Error");
+                aPackage.setMessage("Player doesn't have this deck");
+                return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+            }
+            if(deck.getLeader().equals(player.getMainDeck())){
+                aPackage.setName("Error");
+                aPackage.setMessage("Change main deck before removing this deck!");
+                return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+            }
 
             playerService.removeDeck(id, did);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            aPackage.setName("Successful");
+            aPackage.setMessage("Deck Remove");
+
+            return new ResponseEntity<>(aPackage, HttpStatus.OK);
         }catch (PlayerNotFoundException | DeckNotFoundException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            Package aPackage = new Package();
+            aPackage.setName("Error");
+            aPackage.setMessage(e.getMessage());
+
+            return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -135,6 +174,19 @@ public class PlayerRestController {
             Player player = playerService.get(id);
             List<TournamentDto> tournaments = tournamentToDto.convertList(player.getTournaments());
             return new ResponseEntity<>(tournaments, HttpStatus.OK);
+        }catch (PlayerNotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}/decks", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<DeckDto>> getDecks(@PathVariable Integer id){
+
+        try {
+            Player player = playerService.get(id);
+            List<DeckDto> decks = deckToDto.convertList(player.getDecks());
+            return new ResponseEntity<>(decks, HttpStatus.OK);
         }catch (PlayerNotFoundException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -156,5 +208,9 @@ public class PlayerRestController {
     @Autowired
     public void setTournamentToDto(TournamentToDto tournamentToDto) {
         this.tournamentToDto = tournamentToDto;
+    }
+    @Autowired
+    public void setDeckToDto(DeckToDto deckToDto) {
+        this.deckToDto = deckToDto;
     }
 }
