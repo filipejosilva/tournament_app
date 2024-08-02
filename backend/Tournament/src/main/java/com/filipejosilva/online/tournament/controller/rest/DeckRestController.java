@@ -6,6 +6,7 @@ import com.filipejosilva.online.tournament.exception.DeckNotFoundException;
 import com.filipejosilva.online.tournament.exception.TournamentNotFoundException;
 import com.filipejosilva.online.tournament.model.Deck;
 import com.filipejosilva.online.tournament.model.Package;
+import com.filipejosilva.online.tournament.model.Player;
 import com.filipejosilva.online.tournament.service.DeckService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,15 +50,35 @@ public class DeckRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity add(@Valid @RequestBody Deck deck , BindingResult bindingResult){
+    public ResponseEntity<Package> add(@Valid @RequestBody Deck deck , BindingResult bindingResult){
+        Package aPackage = new Package();
         if (bindingResult.hasErrors()){
-            return new ResponseEntity<>(deck, HttpStatus.BAD_REQUEST);
+            aPackage.setName("Error");
+            aPackage.setMessage("Something went wrong, try again");
+            return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+        }
+
+        if(deck.getId() != null){
+            aPackage.setName("Error");
+            aPackage.setMessage("Something went wrong");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         Deck newDeck = deck;
-        deckService.add(newDeck);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<Deck> list = deckService.getList();
+        for(Deck d : list){
+            if(newDeck.getLeader().equals(d.getLeader())){
+                aPackage.setName("Error");
+                aPackage.setMessage("Deck is already in");
+                return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        deckService.add(newDeck);
+        aPackage.setName("Successful");
+        aPackage.setMessage("Deck register");
+        return new ResponseEntity<>(aPackage, HttpStatus.OK);
     }
     @RequestMapping(method = RequestMethod.DELETE, path = "/{id}/delete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Package> delete(@PathVariable Integer id){

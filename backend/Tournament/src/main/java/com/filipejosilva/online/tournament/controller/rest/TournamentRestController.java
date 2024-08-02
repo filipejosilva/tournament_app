@@ -7,6 +7,7 @@ import com.filipejosilva.online.tournament.converter.TournamentToDto;
 import com.filipejosilva.online.tournament.exception.RegisterErrorException;
 import com.filipejosilva.online.tournament.exception.RoundNotFinishException;
 import com.filipejosilva.online.tournament.exception.TournamentNotFoundException;
+import com.filipejosilva.online.tournament.model.Deck;
 import com.filipejosilva.online.tournament.model.Package;
 import com.filipejosilva.online.tournament.model.Tournament;
 import com.filipejosilva.online.tournament.service.PlayerService;
@@ -53,18 +54,35 @@ public class TournamentRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity add(@Valid @RequestBody Tournament tournament , BindingResult bindingResult){
+    public ResponseEntity<Package> add(@Valid @RequestBody Tournament tournament , BindingResult bindingResult){
+        Package aPackage = new Package();
         if (bindingResult.hasErrors()){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            aPackage.setName("Error");
+            aPackage.setMessage("Something went wrong, try again");
+            return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
         }
         if(tournament.getId() != null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            aPackage.setName("Error");
+            aPackage.setMessage("Something went wrong");
+            return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
         }
 
         Tournament tournamentNew = tournament;
+
+        List<Tournament> list = tournamentService.list();
+        for(Tournament t : list){
+            if(tournamentNew.getName().equals(t.getName())){
+                aPackage.setName("Error");
+                aPackage.setMessage("Already exist a tournament with this name");
+                return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+            }
+        }
+
         tournamentService.newTournament(tournamentNew);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        aPackage.setName("Successful");
+        aPackage.setMessage("Tournament created");
+        return new ResponseEntity<>(aPackage, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/edit", consumes = MediaType.APPLICATION_JSON_VALUE)

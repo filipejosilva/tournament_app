@@ -57,18 +57,35 @@ public class PlayerRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity add(@Valid @RequestBody Player player , BindingResult bindingResult){
+    public ResponseEntity<Package> add(@Valid @RequestBody Player player , BindingResult bindingResult){
+        Package aPackage = new Package();
         if (bindingResult.hasErrors()){
+            aPackage.setName("Error");
+            aPackage.setMessage("Something went wrong, try again");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         if(player.getId() != null){
+            aPackage.setName("Error");
+            aPackage.setMessage("Something went wrong");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         Player newPlayer = player;
+
+        List<Player> list = playerService.list();
+        for(Player p : list){
+            if(newPlayer.getNickname().equals(p.getNickname())){
+                aPackage.setName("Error");
+                aPackage.setMessage("Name already exists");
+                return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+            }
+        }
+
         playerService.addPlayer(newPlayer);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        aPackage.setName("Successful");
+        aPackage.setMessage("Player register");
+        return new ResponseEntity<>(aPackage, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/edit", consumes = MediaType.APPLICATION_JSON_VALUE)
