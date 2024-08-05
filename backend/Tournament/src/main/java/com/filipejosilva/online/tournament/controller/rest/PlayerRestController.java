@@ -11,7 +11,6 @@ import com.filipejosilva.online.tournament.exception.PlayerNotFoundException;
 import com.filipejosilva.online.tournament.model.Deck;
 import com.filipejosilva.online.tournament.model.Package;
 import com.filipejosilva.online.tournament.model.Player;
-import com.filipejosilva.online.tournament.model.Tournament;
 import com.filipejosilva.online.tournament.service.DeckService;
 import com.filipejosilva.online.tournament.service.PlayerService;
 import jakarta.validation.Valid;
@@ -23,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -89,20 +89,51 @@ public class PlayerRestController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/edit", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity edit(@Valid @RequestBody Player player , BindingResult bindingResult){
+    public ResponseEntity<Package> edit(@Valid @RequestBody Player player , BindingResult bindingResult){
+
         try {
+            Package aPackage = new Package();
             if (bindingResult.hasErrors()){
+                aPackage.setName("Error");
+                aPackage.setMessage("Something went wrong, try again");
+                return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+            }
+
+            if(player.getId() == null){
+                aPackage.setName("Error");
+                aPackage.setMessage("Can't edit this player, something is wrong");
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
+            List<Player> list = playerService.list();
+            for(Player p : list){
+                if(player.getNickname().equals(p.getNickname())){
+                    if(player.getId().equals(p.getId())){
+                        continue;
+                    }
+                    aPackage.setName("Error");
+                    aPackage.setMessage("Name already exists");
+                    return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+                }
+            }
+
             Player newPlayer = playerService.get(player.getId());
+
+
+
             newPlayer.setMainDeck(player.getMainDeck());
             newPlayer.setNickname(player.getNickname());
             playerService.addPlayer(newPlayer);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            aPackage.setName("Successful");
+            aPackage.setMessage("Player edited");
+
+            return new ResponseEntity<>(aPackage, HttpStatus.OK);
         }catch (PlayerNotFoundException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            Package aPackage = new Package();
+            aPackage.setName("Error");
+            aPackage.setMessage("PLayer not found");
+            return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
         }
 
     }

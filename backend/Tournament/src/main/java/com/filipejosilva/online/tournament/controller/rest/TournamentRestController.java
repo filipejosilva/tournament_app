@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -73,7 +74,7 @@ public class TournamentRestController {
         for(Tournament t : list){
             if(tournamentNew.getName().equals(t.getName())){
                 aPackage.setName("Error");
-                aPackage.setMessage("Already exist a tournament with this name");
+                aPackage.setMessage("Theres already a tournament with this name");
                 return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
             }
         }
@@ -86,23 +87,53 @@ public class TournamentRestController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/edit", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity edit(@Valid @RequestBody Tournament tournament , BindingResult bindingResult){
+    public ResponseEntity<Package> edit(@Valid @RequestBody Tournament tournament , BindingResult bindingResult){
+
         try {
+            Package aPackage = new Package();
             if (bindingResult.hasErrors()){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                aPackage.setName("Error");
+                aPackage.setMessage("Something went wrong, try again");
+                return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
             }
             if(tournament.getId() == null){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                aPackage.setName("Error");
+                aPackage.setMessage("Impossible to edit this tournament");
+                return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+            }
+
+            List<Tournament> list = tournamentService.list();
+            if(tournament.getStatus().equals("CLOSED") || tournament.equals("PLAY")){
+                aPackage.setName("Error");
+                aPackage.setMessage("Tournament in progress can't change name or date");
+                return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+            }
+            for(Tournament t : list){
+                if(tournament.getName().equals(t.getName())){
+                    if(tournament.getId().equals(t.getId())){
+                        continue;
+                    }
+                    aPackage.setName("Error");
+                    aPackage.setMessage("Theres already a tournament with this name");
+                    return new ResponseEntity<>(aPackage, HttpStatus.BAD_REQUEST);
+                }
             }
 
             Tournament tournamentNew = tournamentService.get(tournament.getId());
+
             tournamentNew.setName(tournament.getName());
             tournamentNew.setDate(tournament.getDate());
             tournamentService.updateTournament(tournamentNew);
 
-            return new ResponseEntity<>(HttpStatus.OK);
+            aPackage.setName("Successful");
+            aPackage.setMessage("Tournament created");
+
+            return new ResponseEntity<>(aPackage, HttpStatus.OK);
         }catch (TournamentNotFoundException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            Package aPackage = new Package();
+            aPackage.setName("Error");
+            aPackage.setMessage("Tournament not found!");
+            return new ResponseEntity<>(aPackage, HttpStatus.NOT_FOUND);
         }
 
     }
