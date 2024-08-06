@@ -4,6 +4,8 @@ import { normalOverlay } from "./overlay.js";
 import { registerPlayer, removePlayer, startTournamentRound } from "../services/tournament_api.js";
 import { editOverlay } from "./overlay.js";
 
+import { off, addPlayerTournamentOverlay } from "./overlay.js";
+
 export const addPlayer = (id) => {
     const btn = document.createElement("button");
     btn.classList.add("btn")
@@ -11,8 +13,9 @@ export const addPlayer = (id) => {
 
     btn.addEventListener("click", event => {
         event.preventDefault();
-        console.log(id + "add player");
-        gotoId("/tournament/add", id)
+
+        addPlayerTournamentOverlay(id)
+        //gotoId("/tournament/add", id)
     })
 
     return btn;
@@ -26,7 +29,6 @@ export const editTournament = (id) => {
 
     btn.addEventListener("click", event => {
         event.preventDefault();
-        console.log(id + "edit");
         editOverlay("tournament", id)
     })
 
@@ -40,7 +42,6 @@ export const startTournament = (id) => {
 
     btn.addEventListener("click", async event => {
         event.preventDefault();
-        console.log(id + "start");
 
         const data = await startTournamentRound(id);
 
@@ -63,7 +64,6 @@ export const currentRound = (id) => {
 
     btn.addEventListener("click", event => {
         event.preventDefault();
-        //console.log(id + "Round");
         document.getElementById("container").innerHTML = "";
         gotoId("/round", id)
     })
@@ -78,7 +78,6 @@ export const finishRound = (id) => {
 
     btn.addEventListener("click", async event => {
         event.preventDefault();
-        console.log(id + "Round");
 
         const data = await startTournamentRound(id);
 
@@ -104,10 +103,11 @@ export const registerPlayerBtn = (tournamentId, playerId) =>{
         const data = await registerPlayer(tournamentId, playerId);
 
         if(data.name === "Error"){
+            off()
             normalOverlay(data.message)
             return
         }
-
+        off()
         gotoId("/tournament_info", tournamentId)
     })
 

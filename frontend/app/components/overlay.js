@@ -1,7 +1,14 @@
-import { goto, gotoId } from "../main.js";
+import { gotoId } from "../main.js";
 import { winnerSelection } from "../services/match_api.js"
 import { getPlayer,editPlayer } from "../services/player_api.js";
 import { getTournament, editTournament } from "../services/tournament_api.js";
+import { getDeckList } from "../services/player_api.js";
+import { getDecks } from "../services/deck_api.js";
+import { informationBuildOneLineBold } from "./information_div.js";
+import { addDeckPlayerBtn, removeDeckPlayerBtn } from "./btn_player.js";
+import { getPlayerList } from "../services/player_api.js";
+import { getPlayerListTournament } from "../services/tournament_api.js";
+import { registerPlayerBtn } from "./btn_tournament.js";
 
 export const matchOverlay = (matchData, tournamentId) => {
 
@@ -88,7 +95,7 @@ function on(){
     document.getElementById("overlay").style.display = "flex";
 }
 
-function off(){
+export function off(){
     document.getElementById("overlay").style.display = "none";
 
     document.getElementById("overlay").innerHTML = "";
@@ -145,7 +152,7 @@ async function playerEdit (player) {
     h2.innerText = "Player name";
 
     const input = document.createElement("input")
-    input.classList.add("input")
+    input.classList.add("inputoverlay")
     input.value = player.name
 
     //Select
@@ -154,7 +161,7 @@ async function playerEdit (player) {
 
     const selectInput = document.createElement("select");
     selectInput.required = true;
-    selectInput.classList.add("input");
+    selectInput.classList.add("inputoverlay");
 
     const InputOptionNull = document.createElement("option")
     
@@ -230,14 +237,14 @@ function tournamentEdit (tournament){
     h2.innerText = "Tournament name";
 
     const input = document.createElement("input")
-    input.classList.add("input")
+    input.classList.add("inputoverlay")
     input.value = tournament.name
 
     const h2Date = document.createElement("h2")
     h2Date.innerText = "Date";
             
     const inputDate = document.createElement("input")
-    inputDate.classList.add("input")
+    inputDate.classList.add("inputoverlay")
     inputDate.value = tournament.date
 
     form.appendChild(h2);
@@ -286,3 +293,114 @@ function populateDecks(decklist, select){
 
 }
 
+export  const addDeckOverlay = async(id) =>{
+
+    buildOverlay();
+    on();
+
+    const div = document.createElement("div");
+    div.setAttribute("id", "chooseadd")
+
+    const title = document.createElement("h1");
+    title.innerText = "Decks Available";
+    div.appendChild(title);
+
+    const data = await getDecks();
+
+    const dataDeckList = await getDeckList(id);
+
+    data.forEach(element => {
+
+        var sameDeck = false;
+
+        dataDeckList.forEach(check => {
+            if(element.id=== check.id){
+                sameDeck = true;
+            }
+        })
+
+        if(sameDeck !== true){
+            const main = document.createElement("div");
+            main.classList.add("plistoverlay")
+            main.appendChild(informationBuildOneLineBold(element.name));
+            main.appendChild(addDeckPlayerBtn(id, element.id))
+
+            div.appendChild(main);
+        }
+
+    })
+    document.getElementById("overlay").appendChild(div)
+}
+
+export const removeDeckOverlay = async playerId =>{
+
+    buildOverlay();
+    on();
+
+    const div = document.createElement("div");
+    div.setAttribute("id", "chooseadd")
+    
+    const title = document.createElement("h1");
+    title.innerText = "Deck List";
+    div.appendChild(title);
+
+
+    const data = await getDeckList(playerId);
+
+    data.forEach(element => {
+
+        
+            const main = document.createElement("div");
+            main.classList.add("plistoverlay")
+            main.appendChild(informationBuildOneLineBold(element.name));
+            main.appendChild(removeDeckPlayerBtn(playerId, element.id))
+
+            div.appendChild(main);
+
+        
+    });
+    document.getElementById("overlay").appendChild(div)
+
+
+}
+
+export const addPlayerTournamentOverlay = async tournamentId =>{
+    buildOverlay();
+    on();
+
+    const div = document.createElement("div");
+    div.setAttribute("id", "chooseadd")
+
+    const title = document.createElement("h1");
+    title.innerText = "Players available:";
+    div.appendChild(title);
+
+    const data = await getPlayerList ();
+
+    const playersTournament = await getPlayerListTournament(tournamentId)
+
+        data.forEach(element => {
+
+            var samePlayer = false;
+
+            playersTournament.forEach(check =>{
+                if(element.id === check.id){
+                    samePlayer = true;
+                }
+                
+            });
+
+            if(samePlayer === false){
+                const main = document.createElement("div");
+                main.classList.add("plistoverlay")
+                main.appendChild(informationBuildOneLineBold(element.name));
+                main.appendChild(informationBuildOneLineBold(element.mainDeck));
+                main.appendChild(registerPlayerBtn(tournamentId, element.id))
+
+                div.appendChild(main);
+            }
+            
+        })
+
+    document.getElementById("overlay").appendChild(div)
+}

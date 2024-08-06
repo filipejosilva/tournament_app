@@ -3,6 +3,9 @@ import { normalOverlay } from "./overlay.js";
 import { addDeckPlayer, removeDeckPlayer } from "../services/player_api.js";
 import { editOverlay } from "../components/overlay.js";
 
+import { addDeckOverlay, removeDeckOverlay } from "./overlay.js";
+import { off } from "./overlay.js";
+
 export const editBtn = (id) => {
     const btn = document.createElement("button");
     btn.classList.add("btn")
@@ -10,7 +13,6 @@ export const editBtn = (id) => {
 
     btn.addEventListener("click", event => {
         event.preventDefault();
-        console.log(id + "edit");
         editOverlay("player", id);
     })
 
@@ -38,7 +40,8 @@ export const addDeck = id => {
 
     btn.addEventListener("click", event => {
         event.preventDefault();
-        gotoId("/player/deck/add", id)
+        addDeckOverlay(id)
+        //gotoId("/player/deck/add", id)
     })
 
     return btn;
@@ -51,7 +54,8 @@ export const removeDeck = id => {
 
     btn.addEventListener("click", event => {
         event.preventDefault();
-        gotoId("/player/deck/remove", id)
+        removeDeckOverlay(id)
+        //gotoId("/player/deck/remove", id)
     })
 
     return btn;
@@ -68,9 +72,11 @@ export const addDeckPlayerBtn = (playerId, deckId) => {
         const data = await addDeckPlayer(playerId, deckId);
 
         if(data.name === "Error"){
+            off()
             normalOverlay(data.message)
             return;
         }
+        off()
         gotoId("/player_info", playerId)
     })
 
@@ -88,9 +94,11 @@ export const removeDeckPlayerBtn = (playerId, deckId) => {
         const data = await removeDeckPlayer(playerId, deckId);
 
         if(data.name === "Error"){
+            off()
             normalOverlay(data.message)
             return;
         }
+        off()
         gotoId("/player_info", playerId)
     })
 
