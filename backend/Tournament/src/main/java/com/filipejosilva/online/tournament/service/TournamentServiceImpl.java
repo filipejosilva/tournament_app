@@ -170,7 +170,6 @@ public class TournamentServiceImpl implements TournamentService {
      */
     public void addPlayers(int tid, int pid)throws RegisterErrorException{
         try {
-            //tx.beginWrite();
             Tournament tournament = get(tid);
             Player player = playerService.get(pid);
             if(player.getTournaments().contains(tournament)){
@@ -178,11 +177,9 @@ public class TournamentServiceImpl implements TournamentService {
             }
             player.getTournaments().add(tournament);
             playerService.updatePlayer(player);
-            //tx.commit();
 
         }catch (PersistenceException | TournamentNotFoundException | PlayerNotFoundException | DeckNotFoundException e){
             e.getMessage();
-            //tx.rollback();
             throw new RegisterErrorException();
         }
     }

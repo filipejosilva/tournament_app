@@ -35,7 +35,6 @@ public class RankingServiceImpl implements RankingService{
      */
     @Override
     public void undefeatedPlayers(int tournamentID) throws NoUndefeatedPlayerException {
-        /* testt this on tournament round creation */
         try {
             Ranking ranking = new Ranking(tournamentService.get(tournamentID).getPoints());
             if(ranking.getRanking()[0].getScore() == ranking.getRanking()[1].getScore()){

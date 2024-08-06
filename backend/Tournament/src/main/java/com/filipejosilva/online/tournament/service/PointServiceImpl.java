@@ -41,7 +41,6 @@ public class PointServiceImpl implements PointService{
 
                 Point point = new Point();
                 point.setTournament(tournament);
-                /* if theres an error try player service/dao */
                 point.setPlayer(p);
                 point.setScore(0);
                 point.setOMW(0);
@@ -78,7 +77,6 @@ public class PointServiceImpl implements PointService{
 
     @Override
     public void update(Point point) throws PointNotFoundException{
-        /* Need to change this to update points whn round is finish */
 
         try {
             tx.beginWrite();
