@@ -1,6 +1,4 @@
-import { createMenu } from "../components/menu_render.js";
 import { getDecks} from "../services/deck_api.js";
-import { goto } from "../main.js";
 import { informationBuildVertical } from "../components/information_div.js";
 import { btnRemoveDeck } from "../components/btns.js";
 
@@ -25,7 +23,6 @@ const buildDeck = async () =>{
     deckList.appendChild(title);
 
     const data = await getDecks();
-    console.log(data);
 
     data.forEach(element => {
         const main = document.createElement("div");

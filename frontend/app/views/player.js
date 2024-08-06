@@ -1,7 +1,5 @@
 import { getPlayer, 
     getTournamentList } from "../services/player_api.js";
-import { createMenu } from "../components/menu_render.js";
-import { goto, gotoId } from "../main.js";
 import { informationBuildHorizontal, 
     informationBuildVertical} from "../components/information_div.js";
 import { btnViewTournament } from "../components/btns.js";
@@ -23,8 +21,6 @@ export const renderPlayerInfo = async (id) => {
 
     const data = await getPlayer(id);
 
-    //console.log(data);
-
     btns(data);
     buildPage(data)
 
@@ -42,7 +38,7 @@ const btns = (data) =>{
     div.appendChild(addDeck(data.id));
     div.appendChild(removeDeck(data.id));
     div.appendChild(editBtn(data.id));
-    div.appendChild(removeBtn(data.id));
+    //div.appendChild(removeBtn(data.id));
 
     btn_div.appendChild(div);
     Pinfo.appendChild(btn_div)
