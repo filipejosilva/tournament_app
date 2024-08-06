@@ -13,7 +13,6 @@ export const btnViewTournament = (id) =>{
 
     btn.addEventListener('click', event => {
         event.preventDefault();
-        console.log(id)
         gotoId("/tournament_info", id);
     });
 
@@ -32,7 +31,6 @@ export const btnViewPlayer = (id) =>{
 
     btn.addEventListener('click', event => {
         event.preventDefault();
-        console.log("View player " + id)
         gotoId("/player_info", id);
     });
 
