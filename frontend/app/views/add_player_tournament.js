@@ -2,7 +2,6 @@ import { gotoId } from "../main.js";
 import { getPlayerList } from "../services/player_api.js";
 import { getPlayerListTournament, registerPlayer } from "../services/tournament_api.js";
 import { informationBuildVertical} from "../components/information_div.js";
-import { btnViewPlayer } from "../components/btns.js";
 import { registerPlayerBtn } from "../components/btn_tournament.js";
 
 export const renderAddPlayerTournament = (tournamentId) =>{
@@ -55,7 +54,6 @@ const buildPage = async tournamentId =>{
 
     const playersTournament = await getPlayerListTournament(tournamentId)
 
-        console.log(data)
         data.forEach(element => {
 
             var samePlayer = false;

@@ -2,7 +2,7 @@ import { informationBuildOneLine, informationBuildRound } from "../components/in
 import { getTournamentRounds, 
     updateRound } from "../services/round_api.js";
 import { matchOverlay, normalOverlay } from "../components/overlay.js";
-import { goto, gotoId } from "../main.js";
+import { gotoId } from "../main.js";
 
 export const renderRoundPage = async (id) =>{
 
@@ -30,10 +30,6 @@ export const renderRoundPage = async (id) =>{
     btns(currentRound, id);
     buildPage(currentRound, id)
 
-    console.log(currentRound, id);
-
-
-
 }
 
 const btns = (roundData, tournamentId) =>{
@@ -60,7 +56,6 @@ const finishBtn = (id, tournamentId) => {
 
     btn.addEventListener("click", async event => {
         event.preventDefault();
-        console.log(id + " remove");
 
         const data = await updateRound(id);
 
@@ -147,7 +142,6 @@ const matchBtn = (matchData, tournamentId) =>{
 
     btn.addEventListener('click', event => {
         event.preventDefault();
-        //console.log(matchData)
         matchOverlay(matchData, tournamentId);
     });
 

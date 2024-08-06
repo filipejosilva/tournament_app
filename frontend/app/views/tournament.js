@@ -18,8 +18,6 @@ export const renderTournamentPage = async (id) =>{
 
     const data = await getTournament(id);
 
-    //console.log(data);
-
     await btns(data);
     buildPage(data)
 
@@ -35,8 +33,6 @@ const btns = async(data) =>{
     btn_div.classList.add("btn_header");
 
     const div = document.createElement("div")
-
-    //console.log(data)
 
     switch(data.status){
         case "OPEN":
@@ -59,7 +55,7 @@ const btns = async(data) =>{
             div.appendChild(finishRound(data.id));
             break;
         case "CLOSED":
-            console.log(data.status)
+            //console.log(data.status)
             break;
         default:
         console.log("Something went wrong")

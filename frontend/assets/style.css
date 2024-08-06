@@ -17,7 +17,7 @@ ul{
 }
 
 nav {
-    background: #4c4166; /* was 222, #ba9ffb;  */
+    background: #222; /* was 222, #ba9ffb; #4c4166 */
     padding: 0 15px;
 }
 
@@ -526,6 +526,9 @@ a {
     /*cursor: pointer;
     pointer-events: none;*/
 }
+#choose button{
+    margin-top: 0.5vh;
+}
 
 .choosetext{
     margin-left: 5vh;
@@ -587,7 +590,54 @@ a {
     padding: 1vh;
     margin-bottom: 1.5vw;
 }
+.inputoverlay{
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    background-color: #222;
+    padding: 1vh;
+    margin-bottom: 1.5vw;
+}
 
+.plistoverlay{
+    display: flex;
+    flex-direction: row;
+
+    background-color: #3f3f3f;
+    border-radius: 10px;
+    color: white;
+    padding: 1vh; /* 2.5 /*
+    /*padding: 1.5%;*/
+    gap: 3vw;
+
+    justify-content: space-between;
+    /*align-items: center;*/
+    margin: 0.5vh;
+
+}
+
+#chooseadd{
+    position: absolute;
+
+    /*top: 25%;
+    left: 49%;*/
+
+    background-color: #3f3f3f;
+    color: white;
+    font-weight: bold;
+    border-radius: 32px; /*was 8 */
+    padding: 2.5vh;
+
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+    justify-content: center;
+
+    z-index: 3;
+    /*cursor: pointer;
+    pointer-events: none;*/
+}
 /*
 MEDIA QUERY MAKE THE SITE RESPONSIVE TO MOBILE
 was 480 for mobile only try 900 for tablets
@@ -943,6 +993,27 @@ was 480 for mobile only try 900 for tablets
         /*cursor: pointer;
         pointer-events: none;*/
     }
+    #chooseadd{
+        position: absolute;
+
+        /*top: 25%;
+        left: 49%;*/
+
+        background-color: #3f3f3f;
+        color: white;
+        font-weight: bold;
+        border-radius: 32px; /*was 8*/
+        padding: 2.5vh;
+
+        display: flex;
+        flex-direction: column;
+        /*align-items: center;*/
+        justify-content: center;
+
+        z-index: 3;
+        /*cursor: pointer;
+        pointer-events: none;*/
+    }
 
     .choosetext{
         margin-left: 5vh;
@@ -1004,8 +1075,34 @@ was 480 for mobile only try 900 for tablets
         padding: 1vh;
         margin-bottom: 1.5vw;
     }
+    .inputoverlay{
+        width: 100%;
+        border-radius: 8px;
+        border: none;
+        color: white;
+        background-color: #222;
+        padding: 1vh;
+        margin-bottom: 1.5vw;
+    }
 
     /*specif for mobile */
     #playerTparticipation{
     }
+    .plist{
+        display: flex;
+        flex-direction: column;
+    
+        background-color: #3f3f3f;
+        border-radius: 25px;
+        color: white;
+        padding: 1vh; /* was */
+        /*padding: 1.5%;*/
+        gap: 3vw;
+    
+        justify-content: space-between;
+        /*align-items: center;*/
+    }
+    
   }
+
+  

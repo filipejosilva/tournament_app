@@ -26,7 +26,6 @@ const buildDeck = async (playerId) =>{
     deckList.appendChild(title);
 
     const data = await getDecks();
-    console.log(data);
 
     const dataDeckList = await getDeckList(playerId);
 

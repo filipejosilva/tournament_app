@@ -1,6 +1,5 @@
 import { createMenu } from "../components/menu_render.js";
 import { getPlayerList } from "../services/player_api.js";
-import { goto } from "../main.js";
 import { informationBuildVertical } from "../components/information_div.js";
 import { btnViewPlayer } from "../components/btns.js";
 
@@ -26,7 +25,6 @@ const buildPage = async () =>{
     playerList.appendChild(title);
 
     const data = await getPlayerList ();
-    console.log(data);
 
     data.forEach(element => {
         const main = document.createElement("div");

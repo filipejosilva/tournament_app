@@ -1,5 +1,4 @@
 import { getTournaments } from "../services/tournament_api.js";
-import { createMenu } from "../components/menu_render.js";
 import { informationBuildVertical } from "../components/information_div.js";
 import { btnViewTournament } from "../components/btns.js";
 
@@ -25,7 +24,6 @@ const buildBasic = async() =>{
     tournamentList.appendChild(title);
 
     const data = await getTournaments();
-    //console.log(data);
 
     data.forEach(element => {
         const main = document.createElement("div");
