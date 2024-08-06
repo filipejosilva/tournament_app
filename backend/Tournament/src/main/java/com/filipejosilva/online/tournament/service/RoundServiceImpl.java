@@ -135,9 +135,6 @@ public class RoundServiceImpl implements RoundService{
                 pointDao.saveOrUpdate(pointUpdate);
             }
 
-
-            /* we can just use tournament.getpoints()... */
-            //List<Point> tournamentPoints = pointService.pointTournament(round.getTournament().getId());
             List<Point> tournamentPoints = round.getTournament().getPoints();
 
             /*Update the OMW added pointTournament method and this until save closed */
