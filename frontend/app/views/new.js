@@ -71,12 +71,16 @@ const tournamentForm = () => {
 
     const input = document.createElement("input")
     input.classList.add("input")
+    input.title = "Please add a tournament name.";
+    input.required = true;
 
     const h2Date = document.createElement("h2")
     h2Date.innerText = "Date";
             
     const inputDate = document.createElement("input")
     inputDate.classList.add("input")
+    inputDate.title = "Please add a Date";
+    inputDate.required = true;
 
     form.appendChild(h2);
     form.appendChild(input)
@@ -97,20 +101,25 @@ const tournamentForm = () => {
     btn.addEventListener("click", async event =>{
         event.preventDefault()
 
-        const tournament = {
-            id: null,
-            name: input.value,
-            status: "OPEN",
-            date: inputDate.value,
-            winner: null,
+        if (form.checkValidity()) {
 
+            const tournament = {
+                id: null,
+                name: input.value,
+                status: "OPEN",
+                date: inputDate.value,
+                winner: null,
+
+            }
+            const data = await newTournament(tournament);
+            if(data.name === "Error"){
+                normalOverlay(data.message)
+                return;
+            }
+            goto("/tournaments")
+        }else {
+            form.reportValidity();
         }
-        const data = await newTournament(tournament);
-        if(data.name === "Error"){
-            normalOverlay(data.message)
-            return;
-        }
-        goto("/tournaments")
     })
 
     div.appendChild(btn)
@@ -133,6 +142,8 @@ const playerForm = () => {
 
     const input = document.createElement("input")
     input.classList.add("input")
+    input.title = "Please add a Player name.";
+    input.required = true;
 
     form.appendChild(h2);
     form.appendChild(input)
@@ -151,19 +162,24 @@ const playerForm = () => {
     btn.addEventListener("click", async event =>{
         event.preventDefault()
 
-        const player = {
-            id: null,
-            nickname: input.value,
-            mainDeck: null
+        if (form.checkValidity()) {
 
-        }
+            const player = {
+                id: null,
+                nickname: input.value,
+                mainDeck: null
 
-        const data = await newPlayer(player);
-        if(data.name === "Error"){
-            normalOverlay(data.message)
-            return;
+            }
+
+            const data = await newPlayer(player);
+            if(data.name === "Error"){
+                normalOverlay(data.message)
+                return;
+            }
+            goto("/players")
+        }else {
+            form.reportValidity();
         }
-        goto("/players")
 
     })
 
@@ -188,6 +204,8 @@ const deckForm = () => {
 
     const input = document.createElement("input")
     input.classList.add("input")
+    input.title = "Please add a deck name.";
+    input.required = true;
 
     form.appendChild(h2);
     form.appendChild(input)
@@ -206,18 +224,22 @@ const deckForm = () => {
     btn.addEventListener("click", async event =>{
         event.preventDefault()
 
-        const deck = {
-            id: null,
-            leader: input.value,
-        }
+        if (form.checkValidity()) {
 
-        const data = await newDeck(deck);
-        if(data.name === "Error"){
-            normalOverlay(data.message)
-            return;
-        }
-        goto("/decks")
+            const deck = {
+                id: null,
+                leader: input.value,
+            }
 
+            const data = await newDeck(deck);
+            if(data.name === "Error"){
+                normalOverlay(data.message)
+                return;
+            }
+            goto("/decks")
+        }else {
+            form.reportValidity();
+        }
     })
 
     div.appendChild(btn)
