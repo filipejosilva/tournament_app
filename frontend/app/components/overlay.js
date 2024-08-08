@@ -154,6 +154,8 @@ async function playerEdit (player) {
     const input = document.createElement("input")
     input.classList.add("inputoverlay")
     input.value = player.name
+    input.title = "It can't be empty";
+    input.required = true;
 
     //Select
     const h2Deck = document.createElement("h2")
@@ -190,24 +192,28 @@ async function playerEdit (player) {
     btn.addEventListener("click", async event =>{
         event.preventDefault();
 
+        if (form.checkValidity()) {
 
-        const editplayers = {
-            id: player.id,
-            nickname: input.value,
-            mainDeck: selectInput.value,
+            const editplayers = {
+                id: player.id,
+                nickname: input.value,
+                mainDeck: selectInput.value,
 
+            }
+
+            const data = await editPlayer(editplayers);
+
+            if(data.name === "Error"){
+                off()
+                normalOverlay(data.message)
+                return
+            }
+
+            off();
+            gotoId("/player_info", player.id)
+        }else {
+            form.reportValidity();
         }
-
-        const data = await editPlayer(editplayers);
-
-        if(data.name === "Error"){
-            off()
-            normalOverlay(data.message)
-            return
-        }
-
-        off();
-        gotoId("/player_info", player.id)
     })
 
 
@@ -239,6 +245,8 @@ function tournamentEdit (tournament){
     const input = document.createElement("input")
     input.classList.add("inputoverlay")
     input.value = tournament.name
+    input.title = "It can't be empty";
+    input.required = true;
 
     const h2Date = document.createElement("h2")
     h2Date.innerText = "Date";
@@ -246,6 +254,8 @@ function tournamentEdit (tournament){
     const inputDate = document.createElement("input")
     inputDate.classList.add("inputoverlay")
     inputDate.value = tournament.date
+    inputDate.title = "It can't be empty";
+    inputDate.required = true;
 
     form.appendChild(h2);
     form.appendChild(input)
@@ -261,18 +271,24 @@ function tournamentEdit (tournament){
     btn.addEventListener("click", async event =>{
         event.preventDefault();
 
-        tournament.name = input.value;
-        tournament.date = inputDate.value;
+        if (form.checkValidity()) {
 
-        const data = await editTournament(tournament)
-        if(data.name === "Error"){
-            off()
-            normalOverlay(data.message)
-            return
+            tournament.name = input.value;
+            tournament.date = inputDate.value;
+
+            const data = await editTournament(tournament)
+            if(data.name === "Error"){
+                off()
+                normalOverlay(data.message)
+                return
+            }
+
+            gotoId("/tournament_info", tournament.id)
+            off();
+
+        }else {
+            form.reportValidity();
         }
-
-        gotoId("/tournament_info", tournament.id)
-        off();
     })
 
     div.appendChild(p)
