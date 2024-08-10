@@ -69,24 +69,18 @@ public class MatchServiceImpl implements MatchService{
             List<Point> players = round.getTournament().getPoints();
 
             while(!players.isEmpty()){
-                Random rand = new Random();
-                //int random = rand.nextInt(players.size());
-                int random = (int) (Math.random()* (players.size()-1));
-                int fr = random;
-                //Point first = players.get(random);
+
+                int random = (int) (Math.random() * (players.size()-1));
 
                 Match match = new Match();
                 match.setStatus("BATTLE");
                 match.setRound(round);
-                match.getPointp().add(players.get(random));
 
+                Point first = players.get(random);
 
-                //match.getPointp().add(first);
-                //players.remove(match.getPointp().get(0));
-                //players.remove(match.getPointp().size()-1);
-                //players.remove(random);
-                //players.remove(players.get(random));
-                players.remove(fr);
+                match.getPointp().add(first);
+
+                players.remove(match.getPointp().get(0));
 
                 if(players.isEmpty()){
                     match.setWinner(match.getPointp().get(0));
@@ -94,20 +88,15 @@ public class MatchServiceImpl implements MatchService{
                     newMatches.add(match);
                     break;
                 }
-                //int secondRandom = rand.nextInt(players.size());
+
                 int secondRandom = (int) (Math.random() * (players.size()-1));
-                int sr = secondRandom;
-                //Point second = players.get(secondRandom);
-                match.getPointp().add(players.get(secondRandom));
-                //match.getPointp().add(second);
-                //players.remove(match.getPointp().size()-1);
-                //players.remove(match.getPointp().get(1));
-                //players.remove(secondRandom);
-                //players.remove(players.get(secondRandom));
-                players.remove(sr);
+
+                Point second = players.get(secondRandom);
+
+                match.getPointp().add(second);
+                players.remove(match.getPointp().get(1));
 
                 newMatches.add(match);
-
 
             }
             return newMatches;
