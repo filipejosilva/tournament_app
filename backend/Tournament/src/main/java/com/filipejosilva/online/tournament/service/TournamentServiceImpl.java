@@ -125,8 +125,8 @@ public class TournamentServiceImpl implements TournamentService {
             * If we try to create rounds, and its open it means theres no rounds so we need to create points and a new round
              */
             pointService.createPointsForTournament(tournament);
-            roundService.createRound(tournament);
-            //roundService.createFirstRound(tournament);
+            //roundService.createRound(tournament);
+            roundService.createFirstRound(tournament);
             return;
         }
         if(tournament.getStatus().equals("PLAY")){

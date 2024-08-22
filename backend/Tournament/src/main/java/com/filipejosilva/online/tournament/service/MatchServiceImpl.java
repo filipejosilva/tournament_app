@@ -11,6 +11,7 @@ import com.filipejosilva.online.tournament.persistence.TransactionManager;
 import com.filipejosilva.online.tournament.persistence.dao.MatchDao;
 import com.filipejosilva.online.tournament.persistence.dao.PointDao;
 import jakarta.persistence.PersistenceException;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,37 +69,26 @@ public class MatchServiceImpl implements MatchService{
             List<Match> newMatches = new ArrayList<>();
             List<Point> players = round.getTournament().getPoints();
 
-            while(!players.isEmpty()){
+            ArrayList<Integer> randomNumbers = getRandom(players.size());
 
-                int random = (int) (Math.random() * (players.size()-1));
-
+            for(int i = 0; i< randomNumbers.size(); i+=2){
                 Match match = new Match();
                 match.setStatus("BATTLE");
                 match.setRound(round);
+                match.getPointp().add(players.get(randomNumbers.get(i)));
 
-                Point first = players.get(random);
-
-                match.getPointp().add(first);
-
-                players.remove(match.getPointp().get(0));
-
-                if(players.isEmpty()){
+                if(i == (randomNumbers.size() -1) && players.size()%2 != 0){
+                    match.getPointp().add(null);
                     match.setWinner(match.getPointp().get(0));
                     match.setStatus("FINISH");
                     newMatches.add(match);
                     break;
                 }
 
-                int secondRandom = (int) (Math.random() * (players.size()-1));
-
-                Point second = players.get(secondRandom);
-
-                match.getPointp().add(second);
-                players.remove(match.getPointp().get(1));
-
+                match.getPointp().add(players.get(randomNumbers.get(i+1)));
                 newMatches.add(match);
-
             }
+
             return newMatches;
     }
 
@@ -126,6 +116,29 @@ public class MatchServiceImpl implements MatchService{
                 throw new MatchNotFinishException();
             }
         }
+
+    }
+
+    public ArrayList<Integer> getRandom(int size){
+        ArrayList<Integer> numbers = new ArrayList<>();
+
+        Random random = new Random();
+
+        for (int i = 0; i < size; i++)
+        {
+            int newNumber = random.nextInt(size);
+
+            if(i == 0){
+                numbers.add(newNumber);
+                continue;
+            }
+            while(numbers.contains(newNumber)){
+                newNumber = random.nextInt(size);
+            }
+            numbers.add(newNumber);
+        }
+
+        return numbers;
 
     }
 
