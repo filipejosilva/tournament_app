@@ -1,6 +1,6 @@
 # Tournament App
 ## Description 
-Tournament Organizer is a versatile and user-friendly application designed to simplify the process of creating and managing tournaments. It works on a desktop and mobile browsers.
+Tournament Organizer is a versatile and user-friendly application designed to simplify the process of creating and managing tournaments and it works on a desktop and mobile browsers.
 
 Whether you're organizing events for your store or hosting weekly competitions with friends, this application provides all the tools you need to ensure smooth and efficient tournament operations. With Tournament Organizer, you can easily register players, and create, open, and close tournaments using the Swiss style tournament system. 
 
