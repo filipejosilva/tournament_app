@@ -18,11 +18,13 @@ This system guarantees balanced and competitive play by matching players against
 
 ## How to run
 
-- Have Tomcat7 installed and configured
+- Have Tomcat7 installed and configured;
 
-- Deploy the application to tomcat by using this command "mvn tomcat7:deploy"
+- Deploy the application to tomcat by using this command "mvn tomcat7:deploy";
 
-- Open index.html and enjoy
+- Open your local server. If you use VS Code you can use the plugin Live Server;
+
+- Open your browser type the server url and enjoy!
 
 
 ## Bugs
