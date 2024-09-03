@@ -52,6 +52,10 @@ public class DeckServiceImpl implements DeckService{
 
     }
 
+    /**
+     * Fetch the deck
+     * @param id id of the deck
+     */
     @Override
     public Deck get(int id) throws DeckNotFoundException{
 

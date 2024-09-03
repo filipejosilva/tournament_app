@@ -33,6 +33,11 @@ public class MatchServiceImpl implements MatchService{
         return Optional.ofNullable(matchDao.findById(id)).orElseThrow(MatchNotFoundException::new);
     }
 
+    /**
+     * In this method we create the matches for that round
+     * Pairing is not random, matches the other people around the same W/L ratio
+     * @param round that the match belongs
+     */
     @Override
     public List<Match> create(Round round) {
         try {
@@ -64,6 +69,10 @@ public class MatchServiceImpl implements MatchService{
 
     }
 
+    /**
+     * We create the first match of the tournament, all pairing are random
+     * @param round that the match belongs
+     */
     @Override
     public List<Match> createFirstMatch(Round round) {
             List<Match> newMatches = new ArrayList<>();
@@ -92,6 +101,10 @@ public class MatchServiceImpl implements MatchService{
             return newMatches;
     }
 
+    /**
+     * Update the matches, select a winner and change status
+     * @param match that the match belongs
+     */
     @Override
     public void updateMatch(Match match) {
 
@@ -107,6 +120,10 @@ public class MatchServiceImpl implements MatchService{
 
     }
 
+    /**
+     * Check if any match is finished or not
+     * @param round to get the current matches
+     */
     @Override
     public void checkMatches(Round round) throws MatchNotFinishException {
         List<Match> checkMatches = round.getMatches();
@@ -119,6 +136,10 @@ public class MatchServiceImpl implements MatchService{
 
     }
 
+    /**
+     * Random pairing for matches
+     * @param size how many players theres is
+     */
     public ArrayList<Integer> getRandom(int size){
         ArrayList<Integer> numbers = new ArrayList<>();
 

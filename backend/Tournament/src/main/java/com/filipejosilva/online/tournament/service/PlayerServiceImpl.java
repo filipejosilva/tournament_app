@@ -20,16 +20,27 @@ public class PlayerServiceImpl implements PlayerService{
     private PlayerDao playerDao;
     private DeckService deckService;
 
+
+    /**
+     * Fetch the player with that id
+     * @throws PlayerNotFoundException when that players does not exist
+     */
     @Override
     public Player get(int id) throws PlayerNotFoundException {
         return Optional.ofNullable(playerDao.findById(id)).orElseThrow(PlayerNotFoundException::new);
     }
 
+    /**
+     * List of the player in the DB
+     */
     @Override
     public List<Player> list() {
         return playerDao.findAll();
     }
 
+    /**
+     * Update player information
+     */
     @Override
     public void updatePlayer(Player player) throws DeckNotFoundException {
 
@@ -45,6 +56,9 @@ public class PlayerServiceImpl implements PlayerService{
 
     }
 
+    /**
+     * Add deck to the player list
+     */
     @Override
     public void addDeck(int id, int deck){
 
@@ -71,6 +85,9 @@ public class PlayerServiceImpl implements PlayerService{
 
     }
 
+    /**
+     * remove deck from the player list
+     */
     @Override
     public void removeDeck(int playerId, int deckId) throws DeckNotFoundException{
 
@@ -93,6 +110,9 @@ public class PlayerServiceImpl implements PlayerService{
 
     }
 
+    /**
+     * remove player from the db
+     */
     @Override
     public void removePlayer(int id) throws PlayerNotFoundException{
 
@@ -107,6 +127,9 @@ public class PlayerServiceImpl implements PlayerService{
         }
     }
 
+    /**
+     * Add player from the db
+     */
     @Override
     public void addPlayer(Player player){
         try {

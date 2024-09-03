@@ -114,70 +114,33 @@ public class RoundServiceImpl implements RoundService{
 
     /**
      * In this method we change the round status so its possible to start new rounds.
-     * By updating the round status it will update the points and OMW(need to find or create a formula for this)
+     * By updating the round status it will update the points and OMW
      * @param round round that is going to be updated
      */
     @Override
     public void updateRound(Round round){
         /*Update score when round is updated to finish */
         try {
-            tx.beginWrite();
-            roundDao.saveOrUpdate(round);
 
-            matchService.checkMatches(round);
-            List<Match> updatePoints = round.getMatches();
+            updatePoints(round);
 
-            for(Match m : updatePoints){
-                /* make a service to return something when theres no winner */
-                Point pointUpdate = m.getWinner();
+            Round roundNew = get(round.getId());
+            
+            updateOMW(roundNew);
 
-                pointUpdate.setScore(pointUpdate.getScore()+3);
-                pointDao.saveOrUpdate(pointUpdate);
-            }
-
-            List<Point> tournamentPoints = round.getTournament().getPoints();
-
-            /*Update the OMW added pointTournament method and this until save closed */
-            for(Point p : tournamentPoints){
-                int matchesWin = 0;
-                double divisor = p.getMatches().size() * p.getMatches().size();
-
-                for(Match m : p.getMatches()){
-
-                    /* something is off in this logic */
-                    for(Point opponent : m.getPointp()){
-                        if(!opponent.equals(p)){
-
-                            if(opponent.getScore() != 0){
-                                matchesWin += (opponent.getScore() /3);
-                            }
-
-                        }
-                    }
-
-                }
-
-                /* converting to double*/
-                double matchesWon = matchesWin;
-
-                double OMW = (matchesWon/divisor)*100;
-                p.setOMW(OMW);
-
-                pointDao.saveOrUpdate(p);
-            }
-
-            round.setStatus("CLOSED");
-
-            tx.commit();
-
-
-        }catch (PersistenceException | MatchNotFinishException  e){
+        }catch (PersistenceException e){
             e.getMessage();
-            tx.rollback();
+            //tx.rollback();
+        } catch (RoundNotFoundException e) {
+            throw new RuntimeException(e);
         }
 
     }
 
+    /**
+     * Update the points for the players
+     * @param round round that is going to be updated
+     */
     public void updatePoints(Round round){
         try {
             tx.beginWrite();
@@ -200,11 +163,13 @@ public class RoundServiceImpl implements RoundService{
         }
     }
 
+    /**
+     * Update the OWM for the players
+     * @param round round that is going to be updated
+     */
     public void updateOMW(Round round){
         try {
             tx.beginWrite();
-            /* we can just use tournament.getpoints()... */
-            //List<Point> tournamentPoints = pointService.pointTournament(round.getTournament().getId());
             List<Point> tournamentPoints = round.getTournament().getPoints();
 
             /*Update the OMW */
@@ -214,7 +179,6 @@ public class RoundServiceImpl implements RoundService{
 
                 for(Match m : p.getMatches()){
 
-                    /* something is off in this logic */
                     for(Point opponent : m.getPointp()){
                         if(!opponent.equals(p)){
                             if(opponent.getScore() != 0){
