@@ -75,6 +75,9 @@ public class PointServiceImpl implements PointService{
 
     }
 
+    /**
+     * Update points information
+     */
     @Override
     public void update(Point point) throws PointNotFoundException{
 
