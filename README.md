@@ -39,6 +39,7 @@ If you find any bugs please contact me or open an issue in github
     PostgreSQL
     RestApi
     Spring Framework
+    Hibernate
 
 #### Frontend
 
