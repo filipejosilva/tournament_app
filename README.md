@@ -22,9 +22,7 @@ This system guarantees balanced and competitive play by matching players against
 
 - Deploy the application to tomcat by using this command "mvn tomcat7:deploy";
 
-- Open your local server. If you use VS Code you can use the plugin Live Server;
-
-- Open your browser type the server url and enjoy!
+- Open your browser type the server url for tomcat7 is "http://localhost:8080/" and enjoy!
 
 
 ## Bugs
