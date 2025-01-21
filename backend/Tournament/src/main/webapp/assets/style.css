@@ -1,0 +1,1108 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    background-color: #282828;
+    color: whitesmoke;
+    font-family: Arial, Helvetica, sans-serif
+}
+
+/* Menu Bar */
+
+#hover a:hover{
+    cursor: pointer;
+}
+
+ul{
+    margin: 0;
+}
+
+nav {
+    background: #222; /* was 222, #ba9ffb; #4c4166 */
+    padding: 0 15px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+.menu,
+.submenu {   
+    list-style-type: none;
+}
+
+.logo {
+    font-size: 20px;
+    padding: 7.5px 10px 7.5px 0;
+}
+
+.item {
+    padding: 10px;
+}
+
+.item.button {
+    padding: 9px 5px;
+}
+
+.item:not(.button) a:hover,
+.item a:hover::after {
+    color: #ba9ffb;
+    cursor: pointer;
+}
+
+/* Mobile menu */
+
+.menu {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu li a {
+    display: block;
+    padding: 15px 5px;
+}
+
+.menu li.subitem a {
+    padding: 15px;
+}
+
+.toggle {
+    order: 1;
+    font-size: 20px;
+}
+
+.item.button {
+    order: 2;
+}
+
+.item {
+    order: 3;
+    width: 100%;
+    text-align: center;
+    display: none;
+}
+
+.active .item {
+    display: block;
+}
+
+.button.secondary { /* divider between buttons and menu links */
+    border-bottom: 1px #444 solid;
+}
+
+/* Submenu up from mobile screens */
+
+.submenu {
+    display: none;
+}
+
+.submenu-active .submenu {
+   display: block;
+}
+
+.has-submenu i {
+    font-size: 12px;
+}
+
+.has-submenu > a::after {
+    font-family: "Font Awesome 5 Free";
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 900; 
+    content: "\f078";
+    color: white;
+    padding-left: 5px;
+
+}
+
+.subitem a {
+    padding: 10px 15px;
+}
+
+.submenu-active {
+    border-radius: 3px;
+}
+
+/* Desktop menu */
+
+@media all and (min-width: 960px) {
+
+    .menu {
+        /*align-items: flex-start;*/     
+        flex-wrap: nowrap;
+        background: none;
+        padding-right: 15vh;/* was 5*/
+        justify-content: space-around;
+    }
+
+    .logo {
+        order: 0;
+    }
+
+    .item {
+        order: 1;
+        position: relative;
+        display: block; 
+        width: auto;
+    }
+
+    .button {
+        order: 2;
+    }
+
+    .submenu-active .submenu {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 68px;
+        background: #222;
+        border-radius: 5px;
+        padding: 5%;
+    }
+
+    .toggle {
+        display: none;
+    }
+
+    .submenu-active {
+        border-radius: 0;
+    }
+
+}
+
+
+/*main page */
+
+#logo{
+    display: flex;
+    margin-top: 3vh;
+    margin-left: 3vh;
+    width: 13%;
+}
+
+#container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#container h1{
+    font-weight: bold;
+}
+
+#index_btns{
+    margin-top: 3vh;
+    margin-left: 3vh;
+    align-items: center;
+}
+
+#index_btns button{
+    /*border-color: #ba9ffb;*/
+    border: none;
+    border-radius: 20px;
+    background-color: #ba9ffb;
+    color: #121212;
+    font-size: 1.5vh; /*was not here*/
+    font-weight: bold;
+    padding: 2.5vh;
+}
+#index_btns button:hover{
+    cursor: pointer;
+    background-color: #a688fa;
+    color: #121212;
+}
+
+#previous{
+    width: 90%; /* was commented */
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-start;
+    align-self: flex-start;
+    margin-top: 5vh;
+    margin-left: 5vw;
+}
+
+#previous h1{
+    font-weight: bold;
+    margin: 0;
+}
+
+/*Teste --- basic information for every page*/
+
+.ptournament{
+    display: flex;
+    flex-direction: row;
+
+    background-color: #3f3f3f;
+    border-radius: 25px;
+    color: white;
+    padding: 2.5vh;
+    /*padding: 1.5%;*/
+    gap: 3vw;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 3vh;
+}
+
+.infoPT{
+    display: flex;
+    flex-direction: column;
+}
+
+.notbold{
+    margin: 0;
+    color: white;
+}
+
+.bold{
+    margin: 0;
+    font-weight: bold;
+    margin-bottom: 2.5vh;
+    color: white;
+}
+.btn_previousT{
+    background-color: #ba9ffb;
+    color: #282828;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4vw;
+    font-weight: bold;
+}
+
+.btn_previousT:hover{
+    cursor: pointer;
+    /*background-color: #21262d;*/
+    background-color: #9171f8;
+}
+
+/*PLayer list css */
+.anchorplayer{
+    text-decoration: none;
+}
+
+.btn{
+    color: #282828;
+    font-weight: bold;
+    background-color: #ba9ffb;
+    border: none;
+    border-radius: 8px;
+    padding: 0.4vw;
+    font-size: 1.5vh;
+}
+
+.btn:hover{
+    background-color: #9171f8;
+    cursor: pointer;
+}
+
+.btn_header{
+    display: flex;
+    flex-direction: row;
+    /*justify-content: space-between;*/
+    justify-content: flex-end;
+}
+
+.btn_header div{
+    display: flex;
+    gap: 2vh;
+}
+
+.btn_footer{
+    display: flex;
+    flex-direction: row;
+    /*justify-content: space-between;*/
+}
+
+.btn_footer div{
+    display: flex;
+    gap: 2vh;
+}
+
+
+#playerlist{
+    width: 50%;
+    margin: 1.5vw;
+}
+
+.plist{
+    display: flex;
+    flex-direction: row;
+    background-color: #3f3f3f;
+    border-radius: 10px;
+    color: #202020;
+    padding: 2.5vh;
+    /*padding: 1.5%;*/
+    gap: 3vw;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 3vh;
+}
+
+/* Player Info page */
+
+.playerinfocenter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#playerinfo{
+    display: flex;
+    color: white;
+    flex-direction: column;
+    background-color: #3f3f3f;
+    border-radius: 10px;
+    color: #202020;
+    padding: 2.5vh;
+    gap: 1.8vw;
+
+    width: 75%; /* bugged on mobile trying to remove this withd on desktop was 75 */
+    /*justify-content: space-between;*/
+    align-items: center;
+    /*margin-left: 5%;*/
+
+    margin-top: 1vh;
+}
+
+.infoPlayer{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.notboldinfo{
+    margin: 0;
+    color: white;
+    margin-left: 3vw;
+}
+
+.boldinfo{
+    margin: 0;
+    font-weight: bold;
+    color: white;
+}
+
+#playteTparticipation{
+    /*width: 90%;*/
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-start;
+    align-self: flex-start;
+    margin-top: 5vh;
+}
+
+/* Tournament Info */
+.rankings{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.position{
+    background-color:#3f3f3f;
+    border-radius: 10px;
+    color: white;
+    padding: 2.5vh;
+    /*padding: 1.5%;*/
+
+    margin-top: 3vh;
+    margin-right: 3vh;
+}
+
+.ptournamentinfo{
+    display: flex;
+    flex-direction: row;
+
+    background-color: #3f3f3f;
+    border-radius: 10px;
+    color: white;
+    padding: 2.5vh;
+    /*padding: 1.5%;*/
+    gap: 3vw;
+    width: 100%;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 3vh;
+}
+
+.boldtinfo{
+    margin: 0;
+    font-weight: bold;
+    color: white;
+}
+
+/* matches css*/
+
+.ptournamentmatches{
+    display: flex;
+    flex-direction: row;
+
+    gap: 3vw;
+    width: 100%;
+
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 3vh;
+}
+
+.infoMatches{
+    display: flex;
+    flex-direction: column;
+    background-color: #3f3f3f;
+    padding: 2.5vh;
+    border-radius: 10px;
+}
+
+.boldM{
+    margin: 0;
+    font-weight: bold;
+    margin-bottom: 2.5vh;
+    color: white;
+}
+
+.boldlast{
+    margin: 0;
+    font-weight: bold;
+    color: white;
+}
+
+.vs{
+    margin: 0;
+    font-weight: bold;
+    color: whitesmoke;
+    font-weight: bolder;
+    
+    font-size: 7vh;
+}
+
+/* Overlay */
+#overlay{
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    /*cursor: pointer;*/
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#choose{
+    position: absolute;
+
+    /*top: 25%;
+    left: 49%;*/
+
+    background-color: #3f3f3f;
+    color: white;
+    font-weight: bold;
+    border-radius: 32px; /*was 8 */
+    padding: 2.5vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 3;
+    /*cursor: pointer;
+    pointer-events: none;*/
+}
+#choose button{
+    margin-top: 0.5vh;
+}
+
+.choosetext{
+    margin-left: 5vh;
+    margin-right: 5vh;
+    margin-bottom: 1.5vw;
+    font-size:x-large;
+
+    z-index: 3;
+}
+
+.choosediv{
+    display: flex;
+    flex-direction: row;
+    z-index: 3;
+}
+
+.choosebtn{
+    background-color: #9171f8;
+    color: #282828;
+    font-weight: bold;
+    padding: 2vh;
+    border-radius: 8px;
+    border: none;
+
+    font-size: x-large;
+
+    margin-left: 5vh;
+    margin-right: 5vh;
+    margin-bottom: 1.5vw;
+    z-index: 3;
+}
+
+.choosebtn:hover{
+    cursor: pointer;
+    background-color: #7a5af5;
+    z-index: 3;
+}
+
+#overlay_close{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    /*background was removed*/
+}
+
+/* Form */
+
+.input{
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    background-color: #3f3f3f;
+    padding: 1vh;
+    margin-bottom: 1.5vw;
+}
+.inputoverlay{
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    background-color: #222;
+    padding: 1vh;
+    margin-bottom: 1.5vw;
+}
+
+.plistoverlay{
+    display: flex;
+    flex-direction: row;
+
+    background-color: #3f3f3f;
+    border-radius: 10px;
+    color: white;
+    padding: 1vh; /* 2.5 /*
+    /*padding: 1.5%;*/
+    gap: 3vw;
+
+    justify-content: space-between;
+    /*align-items: center;*/
+    margin: 0.5vh;
+
+}
+
+#chooseadd{
+    position: absolute;
+
+    /*top: 25%;
+    left: 49%;*/
+
+    background-color: #3f3f3f;
+    color: white;
+    font-weight: bold;
+    border-radius: 32px; /*was 8 */
+    padding: 2.5vh;
+
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+    justify-content: center;
+
+    z-index: 3;
+    /*cursor: pointer;
+    pointer-events: none;*/
+}
+/*
+MEDIA QUERY MAKE THE SITE RESPONSIVE TO MOBILE
+was 480 for mobile only try 900 for tablets
+*/
+
+@media (max-width: 950px) {
+
+    #logo{
+        display: flex;
+        margin-top: 3vh;
+        margin-left: 3vh;
+        width: 87%;
+    }
+    
+    #container{
+        display: flex;
+        flex-direction: column;
+        /*align-items: center;*/
+    }
+
+    #container h1{
+        font-weight: bold;
+        font-size: 2vh;
+    }
+
+    #index_btns{
+        margin-top: 3vh;
+        margin-left: -0.3vh;
+        align-items: center;
+    }
+    
+    #index_btns button{
+        /*border-color: #ba9ffb;*/
+        border: none;
+        border-radius: 20px;
+        background-color: #ba9ffb;
+        color: #121212;
+        font-size: 1.5vh; /*was not here*/
+        font-weight: bold;
+        padding: 2.5vh;
+    }
+    #index_btns button:hover{
+        cursor: pointer;
+        background-color: #a688fa;
+        color: #121212;
+    }
+    
+    #previous{
+        width: 90%; /* was commented */
+        display: flex;
+        flex-direction: column;
+        /*justify-self: flex-start;*/
+        /*align-self: flex-start;*/
+        margin-top: 5vh;
+        /*margin-left: 5vw;*/
+    }
+    
+    #previous h1{
+        font-weight: bold;
+        margin: 0;
+    }
+    
+    /*Teste --- basic information for every page*/
+
+    .ptournament{
+        display: flex;
+        flex-direction: column;
+    
+        background-color: #3f3f3f;
+        border-radius: 25px;
+        color: white;
+        padding: 2.5vh;
+        /*padding: 1.5%;*/
+        gap: 3vw;
+    
+        justify-content: space-between;
+        /*align-items: center;*/
+    
+        margin-top: 3vh;
+    }
+    
+    .infoPT{
+        display: flex;
+        flex-direction: column;
+        width: 100%;/*may need to remove*/
+    }
+    
+    .notbold{
+        margin: 0;
+        color: white;
+    }
+    
+    .bold{
+        margin: 0;
+        font-weight: bold;
+        margin-top: 0.75vh;/*was margin bottom */
+        color: white;
+    }
+    .btn_previousT{
+        background-color: #ba9ffb;
+        color: #282828;
+        border: none;
+        border-radius: 20px;
+        padding: 0.4vw;
+        font-weight: bold;
+        padding: 1vh;
+    }
+    
+    .btn_previousT:hover{
+        cursor: pointer;
+        /*background-color: #21262d;*/
+        background-color: #9171f8;
+    }
+    
+    /*PLayer list css */
+    .anchorplayer{
+        text-decoration: none;
+    }
+
+    .btn{
+        color: #282828;
+        font-weight: bold;
+        background-color: #ba9ffb;
+        border: none;
+        border-radius: 20px;
+        padding: 1vh;
+        font-size: 1.5vh;
+    }
+
+    .btn:hover{
+        background-color: #9171f8;
+        cursor: pointer;
+    }
+
+    .btn_header{
+        display: flex;
+        flex-direction: row;
+        /*justify-content: space-between;*/
+    }
+
+    .btn_footer{
+        display: flex;
+        flex-direction: row;
+        /*justify-content: space-between;*/
+    }
+
+    #playerlist{
+        width: 85%;
+        margin-top: 3vh;
+    }
+
+    .plist{
+        display: flex;
+        flex-direction: column;
+    
+        background-color: #3f3f3f;
+        border-radius: 25px;
+        color: white;
+        padding: 2.5vh;
+        /*padding: 1.5%;*/
+        gap: 3vw;
+    
+        justify-content: space-between;
+        /*align-items: center;*/
+    
+        margin-top: 3vh;
+    }
+
+    /* Player Info page */
+
+    .playerinfocenter{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #playerinfo{
+        display: flex;
+        color: white;
+        flex-direction: column;
+        background-color: #3f3f3f;
+        border-radius: 20px;
+        color: #202020;
+        padding: 2.5vh;
+        gap: 1.8vw;
+
+        width: 90%; /* was 87*/
+        /*justify-content: space-between;*/
+        align-items: center;
+        /*margin-left: 5%;*/
+
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+    }
+
+    .infoPlayer{
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .notboldinfo{
+        margin: 0;
+        color: white;
+        margin-left: 3vw;
+    }
+
+    .boldinfo{
+        margin: 0;
+        font-weight: bold;
+        color: white;
+    }
+
+    #playteTparticipation{
+        /*width: 90%;*/
+        display: flex;
+        flex-direction: column;
+        justify-self: flex-start;
+        align-self: flex-start;
+        margin-top: 5vh;
+    }
+
+    /* Tournament Info */
+    .rankings{
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .position{
+        background-color:#3f3f3f;
+        border-radius: 10px;
+        color: white;
+        padding: 2.5vh;
+        /*padding: 1.5%;*/
+
+        margin-top: 3vh;
+        margin-right: 3vh;
+    }
+
+    .ptournamentinfo{
+        display: flex;
+        flex-direction: row;
+
+        background-color: #3f3f3f;
+        border-radius: 22px; /* was 10 */
+        color: white;
+        padding: 2.5vh;
+        /*padding: 1.5%;*/
+        gap: 3vw;
+        width: 100%;
+
+        justify-content: space-between;
+        align-items: center;
+
+        margin-top: 3vh;
+    }
+
+    .boldtinfo{
+        margin: 0;
+        font-weight: bold;
+        color: white;
+    }
+
+    /* matches css*/
+
+    .ptournamentmatches{
+        display: flex;
+        flex-direction: column;
+
+        gap: 3vw;
+        width: 100%;
+
+        justify-content: space-between;
+        align-items: center;
+
+        margin-top: 3vh;
+    }
+
+    .infoMatches{
+        display: flex;
+        flex-direction: column;
+        background-color: #3f3f3f;
+        padding: 2.5vh;
+        border-radius: 10px;
+
+        width: 40%;
+        align-items: center;
+    }
+
+    .boldM{
+        margin: 0;
+        font-weight: bold;
+        margin-top: 1.5vh;/*was margin bottom */
+        color: white;
+    }
+
+    .boldlast{
+        margin: 0;
+        font-weight: bold;
+        color: white;
+        margin-top: 1.5vh;
+    }
+
+    .vs{
+        margin: 0;
+        font-weight: bold;
+        color: whitesmoke;
+        font-weight: bolder;
+        
+        font-size: 7vh;
+    }
+
+    /* Overlay */
+    #overlay{
+        position: fixed;
+        display: none;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 2;
+        /*cursor: pointer;*/
+
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #choose{
+        position: absolute;
+
+        /*top: 25%;
+        left: 49%;*/
+
+        background-color: #3f3f3f;
+        color: white;
+        font-weight: bold;
+        border-radius: 32px; /*was 8*/
+        padding: 2.5vh;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        z-index: 3;
+        /*cursor: pointer;
+        pointer-events: none;*/
+    }
+    #chooseadd{
+        position: absolute;
+
+        /*top: 25%;
+        left: 49%;*/
+
+        background-color: #3f3f3f;
+        color: white;
+        font-weight: bold;
+        border-radius: 32px; /*was 8*/
+        padding: 2.5vh;
+
+        display: flex;
+        flex-direction: column;
+        /*align-items: center;*/
+        justify-content: center;
+
+        z-index: 3;
+        /*cursor: pointer;
+        pointer-events: none;*/
+    }
+
+    .choosetext{
+        margin-left: 5vh;
+        margin-right: 5vh;
+        margin-bottom: 4.5vw;
+        font-size:x-large;
+
+        z-index: 3;
+    }
+
+    .choosediv{
+        display: flex;
+        flex-direction: column;
+        z-index: 3;
+    }
+
+    .choosebtn{
+        background-color: #9171f8;
+        color: #282828;
+        font-weight: bold;
+        padding: 2vh;
+        border-radius: 8px;
+        border: none;
+
+        font-size: x-large;
+
+        margin-left: 5vh;
+        margin-right: 5vh;
+        margin-bottom: 4.5vw;
+        z-index: 3;
+    }
+
+    .choosebtn:hover{
+        cursor: pointer;
+        background-color: #7a5af5;
+        z-index: 3;
+    }
+
+    #overlay_close{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 3;
+        /*background was removed*/
+    }
+
+    /* Form */
+
+    .input{
+        width: 100%;
+        border-radius: 8px;
+        border: none;
+        color: white;
+        background-color: #3f3f3f;
+        padding: 1vh;
+        margin-bottom: 1.5vw;
+    }
+    .inputoverlay{
+        width: 100%;
+        border-radius: 8px;
+        border: none;
+        color: white;
+        background-color: #222;
+        padding: 1vh;
+        margin-bottom: 1.5vw;
+    }
+
+    /*specif for mobile */
+    #playerTparticipation{
+    }
+    .plist{
+        display: flex;
+        flex-direction: column;
+    
+        background-color: #3f3f3f;
+        border-radius: 25px;
+        color: white;
+        padding: 1vh; /* was */
+        /*padding: 1.5%;*/
+        gap: 3vw;
+    
+        justify-content: space-between;
+        /*align-items: center;*/
+    }
+    
+  }
+
+  
